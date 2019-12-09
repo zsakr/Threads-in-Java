@@ -1,8 +1,8 @@
 /*
- * This program adds two vectors using n threads: C = A * B
+ * This program mult two vectors using n threads: C = A * B
  */
  import java.util.Scanner;
- 
+
 public class ThreadDotProduct extends Thread {
     private int lo, hi;
     private int[] a, b, c;
@@ -15,20 +15,20 @@ public class ThreadDotProduct extends Thread {
         this.lo = lo;
         this.hi = hi;
     }
-    
+
     public void run() {
         for (int i = lo; i < hi; i++) {
             c[i] = a[i] * b[i];
         }
     }
-    
+
     public static void mult(int[] a, int[] b, int[] c) throws InterruptedException {
         int len = a.length;
-         
+
         // Create and start 10 threads.
-        VectorMultiplyThread[] mythread = new VectorMultiplyThread[n];
+        ThreadDotProduct[] mythread = new ThreadDotProduct[n];
         for (int i = 0; i < n; i++) {
-            mythread[i] = new VectorMultiplyThread(a, b, c, (i*len)/n, ((i+1)*len/n));
+            mythread[i] = new ThreadDotProduct(a, b, c, (i*len)/n, ((i+1)*len/n));
             mythread[i].start();
         }
         // Wait for the threads to finish
@@ -36,7 +36,7 @@ public class ThreadDotProduct extends Thread {
             mythread[i].join();
         }
     }
-    
+
     public static void main(String[] args) throws InterruptedException {
     	long start = System.nanoTime();
     	if(args.length > 0){
@@ -46,10 +46,13 @@ public class ThreadDotProduct extends Thread {
         int[] A = new int[n];
         int[] B = new int[n];
         int[] C = new int[n];
- 	
+
         for (int i = 0; i < n; i++) {
             A[i] = i;
-            B[i] = i*n2;
+            if((n % n2) == 0)
+              B[i] = i * (n/n2);
+            else
+              B[i] = i * (n%n2);
         }
 
         mult(A, B, C);
