@@ -1,4 +1,4 @@
-# A Multithreaded Dot Product
+# A Multithreaded Dot Product.  
 
 # Java program (DotProduct.java) 
  Which, given two n-vectors, x and y, computes the dot product of the two vectors, that is,
